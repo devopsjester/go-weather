@@ -1,9 +1,22 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	"net/http"
+	"os"
 )
+
+type Place struct {
+	City  string `json:"place name"`
+	State string `json:"state"`
+}
+
+type Location struct {
+	Country string   `json:"country"`
+	Places []Place `json:"places"`
+}
 
 // getZipcode function to get the zipcode from command-line arguments
 func getZipcode() string {
@@ -19,9 +32,30 @@ func getZipcode() string {
 	return *zipcodePtr
 }
 
+func getLocation(zipcode string) (*Location, error) {
+	resp, err := http.Get(fmt.Sprintf("http://api.zippopotam.us/us/%s", zipcode))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var location Location
+	if err := json.NewDecoder(resp.Body).Decode(&location); err != nil {
+		return nil, err
+	}
+
+	return &location, nil
+}
+
 func main() {
 	zipcode := getZipcode()
 
-	// Print the zipcode
-	fmt.Println("The zipcode you entered is:", zipcode)
+	location, err := getLocation(zipcode)
+	if err != nil {
+		fmt.Println("Error getting location:", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("The city is:", location.Places[0].City)
+	fmt.Println("The state is:", location.Places[0].State)
 }
