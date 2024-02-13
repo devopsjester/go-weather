@@ -1,0 +1,9 @@
+{
+  "name": "Go Project",
+  "image": "golang:latest",
+  "postCreateCommand": "go get -v",
+  "extensions": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat"
+  ]
+}
