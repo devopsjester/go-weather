@@ -8,6 +8,7 @@
 *.so
 *.dylib
 /weather
+go-weather
 
 # Test binary, built with `go test -c`
 *.test
