@@ -1,4 +1,4 @@
-package main
+package location
 
 import (
 	"encoding/json"
@@ -25,7 +25,7 @@ func GetZipcode() string {
 	flag.Parse()
 
 	if len(*zipcodePtr) != 5 {
-		fmt.Println("Please provide a 5-digit zipcode.")
+		fmt.Println("Provide a 5-digit zipcode, please.")
 		os.Exit(1)
 	}
 
