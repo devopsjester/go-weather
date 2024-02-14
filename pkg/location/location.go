@@ -6,16 +6,14 @@ import (
 	"net/http"
 )
 
-type Place struct {
-	City      string `json:"place name"`
-	State     string `json:"state"`
-	Latitude  string `json:"latitude"`
-	Longitude string `json:"longitude"`
-}
-
 type Location struct {
-	Country string  `json:"country"`
-	Places  []Place `json:"places"`
+	Country string `json:"country"`
+	Places  []struct {
+		City      string `json:"place name"`
+		State     string `json:"state"`
+		Latitude  string `json:"latitude"`
+		Longitude string `json:"longitude"`
+	} `json:"places"`
 }
 
 type HttpClient interface {
