@@ -2,10 +2,8 @@ package location
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"net/http"
-	"os"
 )
 
 type Place struct {
@@ -18,18 +16,6 @@ type Place struct {
 type Location struct {
 	Country string  `json:"country"`
 	Places  []Place `json:"places"`
-}
-
-func GetZipcode() string {
-	zipcodePtr := flag.String("zipcode", "", "A five digit zipcode")
-	flag.Parse()
-
-	if len(*zipcodePtr) != 5 {
-		fmt.Println("Provide a 5-digit zipcode, please.")
-		os.Exit(1)
-	}
-
-	return *zipcodePtr
 }
 
 func GetLocation(zipcode string) (*Location, error) {
