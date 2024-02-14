@@ -18,8 +18,17 @@ type Location struct {
 	Places  []Place `json:"places"`
 }
 
-func GetLocation(zipcode string) (*Location, error) {
-	resp, err := http.Get(fmt.Sprintf("http://api.zippopotam.us/us/%s", zipcode))
+type HttpClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+type LocationService struct {
+	Client HttpClient
+}
+
+func (ls *LocationService) GetLocation(zipcode string) (*Location, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("http://api.zippopotam.us/us/%s", zipcode), nil)
+	resp, err := ls.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}

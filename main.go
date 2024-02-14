@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"flag"
+	"net/http"
 	"os"
 	"go-weather/pkg/location"
 	"go-weather/pkg/weather"
@@ -37,12 +38,15 @@ func getWeather(zipcode string, getLocation func(string) (*location.Location, er
 }
 
 func main() {
+	ls := &location.LocationService{
+		Client: &http.Client{},
+	}
 	zipcode := getZipcodeFromCLIArgument()
-	city, state, temp, err := getWeather(zipcode, location.GetLocation, weather.GetTemperature)
+	city, state, temp, err := getWeather(zipcode, ls.GetLocation, weather.GetTemperature)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	fmt.Println("The temperature in", city, state, "is", temp, "degrees Fahrenheit.")
+	fmt.Printf("The temperature in %s, %s is %.2f degrees Fahrenheit.\n", city, state, temp)
 }
