@@ -21,3 +21,4 @@ go-weather
 
 # Go workspace file
 go.work
+pkg/main/weather
